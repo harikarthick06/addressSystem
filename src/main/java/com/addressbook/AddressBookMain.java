@@ -1,6 +1,8 @@
 package com.addressbook;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class AddressBookMain {
 
@@ -11,9 +13,6 @@ public class AddressBookMain {
         Scanner scanner = new Scanner(System.in);
 
         List<Person> addressBook = new ArrayList<>();
-
-        Map<String, List<Person>> cityPersonMap = new HashMap<>();
-        Map<String, List<Person>> statePersonMap = new HashMap<>();
 
         System.out.print("How many persons do you want to add? ");
         int count = Integer.parseInt(scanner.nextLine());
@@ -30,37 +29,32 @@ public class AddressBookMain {
                 System.out.println("Duplicate Person Found. Person Not Added.");
             } else {
                 addressBook.add(person);
-
-                cityPersonMap
-                        .computeIfAbsent(person.getCity().toLowerCase(), key -> new ArrayList<>())
-                        .add(person);
-
-                statePersonMap
-                        .computeIfAbsent(person.getState().toLowerCase(), key -> new ArrayList<>())
-                        .add(person);
-
                 System.out.println("Person Added Successfully.");
             }
         }
 
-        System.out.println("1. View Persons By City");
-        System.out.println("2. View Persons By State");
+        System.out.println("1. Search Persons By City");
+        System.out.println("2. Search Persons By State");
 
         int choice = Integer.parseInt(scanner.nextLine());
 
         if (choice == 1) {
-            System.out.print("Enter city: ");
-            String city = scanner.nextLine().toLowerCase();
 
-            List<Person> persons = cityPersonMap.getOrDefault(city, new ArrayList<>());
-            persons.forEach(System.out::println);
+            System.out.print("Enter city: ");
+            String city = scanner.nextLine();
+
+            addressBook.stream()
+                    .filter(person -> person.getCity().equalsIgnoreCase(city))
+                    .forEach(System.out::println);
 
         } else if (choice == 2) {
-            System.out.print("Enter state: ");
-            String state = scanner.nextLine().toLowerCase();
 
-            List<Person> persons = statePersonMap.getOrDefault(state, new ArrayList<>());
-            persons.forEach(System.out::println);
+            System.out.print("Enter state: ");
+            String state = scanner.nextLine();
+
+            addressBook.stream()
+                    .filter(person -> person.getState().equalsIgnoreCase(state))
+                    .forEach(System.out::println);
 
         } else {
             System.out.println("Invalid Choice");
