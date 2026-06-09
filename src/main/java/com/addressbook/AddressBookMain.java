@@ -54,7 +54,8 @@ public class AddressBookMain {
             System.out.println("22. Save to JSON Server Async");
             System.out.println("23. Read from JSON Server Async");
             System.out.println("24. Read from Database (UC 16)");
-            System.out.println("25. Exit");
+            System.out.println("25. Update Person in Database & Sync (UC 17)");
+            System.out.println("26. Exit");
             System.out.print("Enter choice: ");
 
             try {
@@ -187,7 +188,33 @@ public class AddressBookMain {
                         addressBookService.setAllPersons(read);
                         addressBookService.displayPersons(read);
                     }
-                    case 25 -> exit = true;
+                    case 25 -> {
+                        System.out.print("Enter first name of contact to update: ");
+                        String fn = scanner.nextLine();
+                        System.out.print("Enter last name of contact to update: ");
+                        String ln = scanner.nextLine();
+                        System.out.print("Enter new address: ");
+                        String addr = scanner.nextLine();
+                        System.out.print("Enter new city: ");
+                        String city = scanner.nextLine();
+                        System.out.print("Enter new state: ");
+                        String state = scanner.nextLine();
+                        System.out.print("Enter new zip: ");
+                        String zip = scanner.nextLine();
+                        System.out.print("Enter new phone number: ");
+                        String phone = scanner.nextLine();
+
+                        int result = addressBookDBService.updatePersonContact(fn, ln, addr, city, state, zip, phone);
+                        if (result > 0) {
+                            System.out.println("Database Updated Successfully.");
+                            // Re-read and sync memory cache
+                            List<Person> read = addressBookDBService.readData();
+                            addressBookService.setAllPersons(read);
+                        } else {
+                            System.out.println("Contact not found or update failed.");
+                        }
+                    }
+                    case 26 -> exit = true;
                     default -> System.out.println("Invalid choice.");
                 }
             } catch (Exception e) {
