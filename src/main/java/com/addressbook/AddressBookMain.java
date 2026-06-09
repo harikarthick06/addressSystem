@@ -6,6 +6,8 @@ import com.addressbook.io.ManualJsonFileService;
 import com.addressbook.server.JsonServerService;
 import com.addressbook.service.AddressBookService;
 import com.addressbook.service.AsyncIOService;
+import com.addressbook.service.AddressBookDBService;
+import com.addressbook.service.DBConnection;
 
 import java.util.List;
 import java.util.Scanner;
@@ -19,9 +21,11 @@ public class AddressBookMain {
     private static final GsonJsonFileService gsonJsonFileService = new GsonJsonFileService();
     private static final JsonServerService jsonServerService = new JsonServerService();
     private static final AsyncIOService asyncIOService = new AsyncIOService();
+    private static final AddressBookDBService addressBookDBService = new AddressBookDBService();
 
     public static void main(String[] args) {
         System.out.println("Welcome to Address Book Program");
+        DBConnection.initializeDatabase();
         boolean exit = false;
 
         while (!exit) {
@@ -49,7 +53,8 @@ public class AddressBookMain {
             System.out.println("21. Read from GSON Async");
             System.out.println("22. Save to JSON Server Async");
             System.out.println("23. Read from JSON Server Async");
-            System.out.println("24. Exit");
+            System.out.println("24. Read from Database (UC 16)");
+            System.out.println("25. Exit");
             System.out.print("Enter choice: ");
 
             try {
@@ -177,7 +182,12 @@ public class AddressBookMain {
                                     addressBookService.displayPersons(read);
                                 });
                     }
-                    case 24 -> exit = true;
+                    case 24 -> {
+                        List<Person> read = addressBookDBService.readData();
+                        addressBookService.setAllPersons(read);
+                        addressBookService.displayPersons(read);
+                    }
+                    case 25 -> exit = true;
                     default -> System.out.println("Invalid choice.");
                 }
             } catch (Exception e) {
