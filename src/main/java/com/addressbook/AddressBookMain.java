@@ -1,6 +1,7 @@
 package com.addressbook;
 
 import com.addressbook.io.CsvFileService;
+import com.addressbook.io.GsonJsonFileService;
 import com.addressbook.io.ManualJsonFileService;
 import com.addressbook.service.AddressBookService;
 
@@ -12,6 +13,7 @@ public class AddressBookMain {
     private static final AddressBookService addressBookService = new AddressBookService();
     private static final ManualJsonFileService manualJsonFileService = new ManualJsonFileService();
     private static final CsvFileService csvFileService = new CsvFileService();
+    private static final GsonJsonFileService gsonJsonFileService = new GsonJsonFileService();
 
     public static void main(String[] args) {
         System.out.println("Welcome to Address Book Program");
@@ -27,7 +29,9 @@ public class AddressBookMain {
             System.out.println("6. Read using Manual JSON File Handler");
             System.out.println("7. Write using CSV File Handler");
             System.out.println("8. Read using CSV File Handler");
-            System.out.println("9. Exit");
+            System.out.println("9. Write using GSON File Handler");
+            System.out.println("10. Read using GSON File Handler");
+            System.out.println("11. Exit");
             System.out.print("Enter choice: ");
 
             try {
@@ -56,7 +60,9 @@ public class AddressBookMain {
                     case 6 -> manualJsonFileService.readData();
                     case 7 -> csvFileService.writeData(addressBookService.getAllPersons());
                     case 8 -> addressBookService.setAllPersons(csvFileService.readData());
-                    case 9 -> exit = true;
+                    case 9 -> gsonJsonFileService.writeData(addressBookService.getAllPersons());
+                    case 10 -> addressBookService.setAllPersons(gsonJsonFileService.readData());
+                    case 11 -> exit = true;
                     default -> System.out.println("Invalid choice.");
                 }
             } catch (Exception e) {
