@@ -3,6 +3,7 @@ package com.addressbook;
 import com.addressbook.io.CsvFileService;
 import com.addressbook.io.GsonJsonFileService;
 import com.addressbook.io.ManualJsonFileService;
+import com.addressbook.server.JsonServerService;
 import com.addressbook.service.AddressBookService;
 
 import java.util.Scanner;
@@ -14,6 +15,7 @@ public class AddressBookMain {
     private static final ManualJsonFileService manualJsonFileService = new ManualJsonFileService();
     private static final CsvFileService csvFileService = new CsvFileService();
     private static final GsonJsonFileService gsonJsonFileService = new GsonJsonFileService();
+    private static final JsonServerService jsonServerService = new JsonServerService();
 
     public static void main(String[] args) {
         System.out.println("Welcome to Address Book Program");
@@ -31,7 +33,9 @@ public class AddressBookMain {
             System.out.println("8. Read using CSV File Handler");
             System.out.println("9. Write using GSON File Handler");
             System.out.println("10. Read using GSON File Handler");
-            System.out.println("11. Exit");
+            System.out.println("11. Save Person to JSON Server");
+            System.out.println("12. Read Persons from JSON Server");
+            System.out.println("13. Exit");
             System.out.print("Enter choice: ");
 
             try {
@@ -62,7 +66,13 @@ public class AddressBookMain {
                     case 8 -> addressBookService.setAllPersons(csvFileService.readData());
                     case 9 -> gsonJsonFileService.writeData(addressBookService.getAllPersons());
                     case 10 -> addressBookService.setAllPersons(gsonJsonFileService.readData());
-                    case 11 -> exit = true;
+                    case 11 -> {
+                        System.out.println("Enter person details to save to server:");
+                        Person person = createPerson();
+                        jsonServerService.addPersonToServer(person);
+                    }
+                    case 12 -> addressBookService.setAllPersons(jsonServerService.readPersonsFromServer());
+                    case 13 -> exit = true;
                     default -> System.out.println("Invalid choice.");
                 }
             } catch (Exception e) {
