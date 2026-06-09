@@ -12,6 +12,9 @@ public class Person {
     private String zip;
     private String phoneNumber;
 
+    public Person() {
+    }
+
     public Person(String firstName, String lastName, String address,
                   String city, String state, String zip, String phoneNumber) {
 
@@ -24,6 +27,10 @@ public class Person {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -32,8 +39,8 @@ public class Person {
         return lastName;
     }
 
-    public String getFullName() {
-        return firstName + " " + lastName;
+    public String getAddress() {
+        return address;
     }
 
     public String getCity() {
@@ -46,10 +53,6 @@ public class Person {
 
     public String getZip() {
         return zip;
-    }
-
-    public String getAddress() {
-        return address;
     }
 
     public String getPhoneNumber() {

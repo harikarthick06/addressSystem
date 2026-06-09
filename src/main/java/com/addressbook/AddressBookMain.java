@@ -1,89 +1,77 @@
 package com.addressbook;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.addressbook.io.ManualJsonFileService;
+import com.addressbook.service.AddressBookService;
+
 import java.util.Scanner;
 
 public class AddressBookMain {
 
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final AddressBookService addressBookService = new AddressBookService();
+    private static final ManualJsonFileService manualJsonFileService = new ManualJsonFileService();
+
     public static void main(String[] args) {
-
         System.out.println("Welcome to Address Book Program");
+        boolean exit = false;
 
-        Scanner scanner = new Scanner(System.in);
+        while (!exit) {
+            System.out.println("\n--- Address Book Menu ---");
+            System.out.println("1. Add Person");
+            System.out.println("2. Edit Person");
+            System.out.println("3. Delete Person");
+            System.out.println("4. View All Persons");
+            System.out.println("5. Write using Manual JSON File Handler");
+            System.out.println("6. Exit");
+            System.out.print("Enter choice: ");
 
-        List<Person> addressBook = new ArrayList<>();
-
-        System.out.print("How many persons do you want to add? ");
-        int count = Integer.parseInt(scanner.nextLine());
-
-        for (int i = 1; i <= count; i++) {
-
-            System.out.println("Enter details for person " + i);
-            Person person = createPerson(scanner);
-
-            boolean duplicate = addressBook.stream()
-                    .anyMatch(existingPerson -> existingPerson.equals(person));
-
-            if (duplicate) {
-                System.out.println("Duplicate Person Found. Person Not Added.");
-            } else {
-                addressBook.add(person);
-                System.out.println("Person Added Successfully.");
+            try {
+                int choice = Integer.parseInt(scanner.nextLine());
+                switch (choice) {
+                    case 1 -> {
+                        Person person = createPerson();
+                        addressBookService.addPerson(person);
+                    }
+                    case 2 -> {
+                        System.out.print("Enter first name to edit: ");
+                        String fn = scanner.nextLine();
+                        System.out.print("Enter last name to edit: ");
+                        String ln = scanner.nextLine();
+                        addressBookService.editPerson(fn, ln, scanner);
+                    }
+                    case 3 -> {
+                        System.out.print("Enter first name to delete: ");
+                        String fn = scanner.nextLine();
+                        System.out.print("Enter last name to delete: ");
+                        String ln = scanner.nextLine();
+                        addressBookService.deletePerson(fn, ln);
+                    }
+                    case 4 -> addressBookService.displayPersons(addressBookService.getAllPersons());
+                    case 5 -> manualJsonFileService.writeData(addressBookService.getAllPersons());
+                    case 6 -> exit = true;
+                    default -> System.out.println("Invalid choice.");
+                }
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
             }
-        }
-
-        System.out.println("1. Search Persons By City");
-        System.out.println("2. Search Persons By State");
-
-        int choice = Integer.parseInt(scanner.nextLine());
-
-        if (choice == 1) {
-
-            System.out.print("Enter city: ");
-            String city = scanner.nextLine();
-
-            addressBook.stream()
-                    .filter(person -> person.getCity().equalsIgnoreCase(city))
-                    .forEach(System.out::println);
-
-        } else if (choice == 2) {
-
-            System.out.print("Enter state: ");
-            String state = scanner.nextLine();
-
-            addressBook.stream()
-                    .filter(person -> person.getState().equalsIgnoreCase(state))
-                    .forEach(System.out::println);
-
-        } else {
-            System.out.println("Invalid Choice");
         }
     }
 
-    private static Person createPerson(Scanner scanner) {
-
+    private static Person createPerson() {
         System.out.print("Enter first name: ");
         String firstName = scanner.nextLine();
-
         System.out.print("Enter last name: ");
         String lastName = scanner.nextLine();
-
         System.out.print("Enter address: ");
         String address = scanner.nextLine();
-
         System.out.print("Enter city: ");
         String city = scanner.nextLine();
-
         System.out.print("Enter state: ");
         String state = scanner.nextLine();
-
         System.out.print("Enter zip: ");
         String zip = scanner.nextLine();
-
         System.out.print("Enter phone number: ");
         String phoneNumber = scanner.nextLine();
-
         return new Person(firstName, lastName, address, city, state, zip, phoneNumber);
     }
 }
