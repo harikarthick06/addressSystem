@@ -47,7 +47,23 @@ public class ManualJsonFileService {
     }
 
     public List<Person> readData() {
-        // Will be implemented in UC 11
-        return new ArrayList<>();
+
+        List<Person> persons = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+
+            String line;
+
+            System.out.println("Reading file using Java File Handler:");
+
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+
+        } catch (IOException exception) {
+            System.out.println("File read error: " + exception.getMessage());
+        }
+
+        return persons;
     }
 }
