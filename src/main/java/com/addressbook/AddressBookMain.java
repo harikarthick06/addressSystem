@@ -1,6 +1,7 @@
 package com.addressbook;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -33,8 +34,12 @@ public class AddressBookMain {
             }
         }
 
-        System.out.println("All Persons in Address Book:");
-        addressBook.forEach(System.out::println);
+        System.out.println("Persons Sorted By Name:");
+
+        addressBook.stream()
+                .sorted(Comparator.comparing(Person::getFirstName)
+                        .thenComparing(Person::getLastName))
+                .forEach(System.out::println);
     }
 
     private static Person createPerson(Scanner scanner) {
