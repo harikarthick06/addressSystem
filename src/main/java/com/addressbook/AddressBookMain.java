@@ -18,15 +18,23 @@ public class AddressBookMain {
         int count = Integer.parseInt(scanner.nextLine());
 
         for (int i = 1; i <= count; i++) {
+
             System.out.println("Enter details for person " + i);
             Person person = createPerson(scanner);
-            addressBook.add(person);
+
+            boolean duplicate = addressBook.stream()
+                    .anyMatch(existingPerson -> existingPerson.equals(person));
+
+            if (duplicate) {
+                System.out.println("Duplicate Person Found. Person Not Added.");
+            } else {
+                addressBook.add(person);
+                System.out.println("Person Added Successfully.");
+            }
         }
 
         System.out.println("All Persons in Address Book:");
-        for (Person person : addressBook) {
-            System.out.println(person);
-        }
+        addressBook.forEach(System.out::println);
     }
 
     private static Person createPerson(Scanner scanner) {
