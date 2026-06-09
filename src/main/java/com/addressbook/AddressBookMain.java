@@ -22,7 +22,8 @@ public class AddressBookMain {
             System.out.println("3. Delete Person");
             System.out.println("4. View All Persons");
             System.out.println("5. Write using Manual JSON File Handler");
-            System.out.println("6. Exit");
+            System.out.println("6. Read using Manual JSON File Handler");
+            System.out.println("7. Exit");
             System.out.print("Enter choice: ");
 
             try {
@@ -48,7 +49,8 @@ public class AddressBookMain {
                     }
                     case 4 -> addressBookService.displayPersons(addressBookService.getAllPersons());
                     case 5 -> manualJsonFileService.writeData(addressBookService.getAllPersons());
-                    case 6 -> exit = true;
+                    case 6 -> manualJsonFileService.readData();
+                    case 7 -> exit = true;
                     default -> System.out.println("Invalid choice.");
                 }
             } catch (Exception e) {
