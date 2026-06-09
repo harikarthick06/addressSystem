@@ -1,9 +1,6 @@
 package com.addressbook;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class AddressBookMain {
 
@@ -14,6 +11,9 @@ public class AddressBookMain {
         Scanner scanner = new Scanner(System.in);
 
         List<Person> addressBook = new ArrayList<>();
+
+        Map<String, List<Person>> cityPersonMap = new HashMap<>();
+        Map<String, List<Person>> statePersonMap = new HashMap<>();
 
         System.out.print("How many persons do you want to add? ");
         int count = Integer.parseInt(scanner.nextLine());
@@ -30,31 +30,40 @@ public class AddressBookMain {
                 System.out.println("Duplicate Person Found. Person Not Added.");
             } else {
                 addressBook.add(person);
+
+                cityPersonMap
+                        .computeIfAbsent(person.getCity().toLowerCase(), key -> new ArrayList<>())
+                        .add(person);
+
+                statePersonMap
+                        .computeIfAbsent(person.getState().toLowerCase(), key -> new ArrayList<>())
+                        .add(person);
+
                 System.out.println("Person Added Successfully.");
             }
         }
 
-        System.out.println("Choose Sorting Option");
-        System.out.println("1. Sort by City");
-        System.out.println("2. Sort by State");
-        System.out.println("3. Sort by Zip");
+        System.out.println("1. View Persons By City");
+        System.out.println("2. View Persons By State");
 
         int choice = Integer.parseInt(scanner.nextLine());
 
-        switch (choice) {
-            case 1 -> addressBook.stream()
-                    .sorted(Comparator.comparing(Person::getCity))
-                    .forEach(System.out::println);
+        if (choice == 1) {
+            System.out.print("Enter city: ");
+            String city = scanner.nextLine().toLowerCase();
 
-            case 2 -> addressBook.stream()
-                    .sorted(Comparator.comparing(Person::getState))
-                    .forEach(System.out::println);
+            List<Person> persons = cityPersonMap.getOrDefault(city, new ArrayList<>());
+            persons.forEach(System.out::println);
 
-            case 3 -> addressBook.stream()
-                    .sorted(Comparator.comparing(Person::getZip))
-                    .forEach(System.out::println);
+        } else if (choice == 2) {
+            System.out.print("Enter state: ");
+            String state = scanner.nextLine().toLowerCase();
 
-            default -> System.out.println("Invalid Choice");
+            List<Person> persons = statePersonMap.getOrDefault(state, new ArrayList<>());
+            persons.forEach(System.out::println);
+
+        } else {
+            System.out.println("Invalid Choice");
         }
     }
 
