@@ -1,5 +1,7 @@
 package com.addressbook;
 
+import java.util.Objects;
+
 public class Person {
 
     private String firstName;
@@ -34,6 +36,26 @@ public class Person {
         return firstName + " " + lastName;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public String getZip() {
+        return zip;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
     public void setAddress(String address) {
         this.address = address;
     }
@@ -52,6 +74,26 @@ public class Person {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof Person person)) {
+            return false;
+        }
+
+        return firstName.equalsIgnoreCase(person.firstName)
+                && lastName.equalsIgnoreCase(person.lastName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName.toLowerCase(), lastName.toLowerCase());
     }
 
     @Override
