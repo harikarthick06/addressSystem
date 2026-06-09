@@ -1,5 +1,7 @@
 package com.addressbook;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class AddressBookMain {
@@ -10,25 +12,20 @@ public class AddressBookMain {
 
         Scanner scanner = new Scanner(System.in);
 
-        Person person = createPerson(scanner);
+        List<Person> addressBook = new ArrayList<>();
 
-        System.out.println("Person Added Successfully");
-        System.out.println(person);
+        System.out.print("How many persons do you want to add? ");
+        int count = Integer.parseInt(scanner.nextLine());
 
-        System.out.print("Enter first name to delete: ");
-        String firstName = scanner.nextLine();
+        for (int i = 1; i <= count; i++) {
+            System.out.println("Enter details for person " + i);
+            Person person = createPerson(scanner);
+            addressBook.add(person);
+        }
 
-        System.out.print("Enter last name to delete: ");
-        String lastName = scanner.nextLine();
-
-        if (person.getFirstName().equalsIgnoreCase(firstName)
-                && person.getLastName().equalsIgnoreCase(lastName)) {
-
-            person = null;
-            System.out.println("Person Deleted Successfully");
-
-        } else {
-            System.out.println("Person Not Found");
+        System.out.println("All Persons in Address Book:");
+        for (Person person : addressBook) {
+            System.out.println(person);
         }
     }
 
