@@ -34,12 +34,28 @@ public class AddressBookMain {
             }
         }
 
-        System.out.println("Persons Sorted By Name:");
+        System.out.println("Choose Sorting Option");
+        System.out.println("1. Sort by City");
+        System.out.println("2. Sort by State");
+        System.out.println("3. Sort by Zip");
 
-        addressBook.stream()
-                .sorted(Comparator.comparing(Person::getFirstName)
-                        .thenComparing(Person::getLastName))
-                .forEach(System.out::println);
+        int choice = Integer.parseInt(scanner.nextLine());
+
+        switch (choice) {
+            case 1 -> addressBook.stream()
+                    .sorted(Comparator.comparing(Person::getCity))
+                    .forEach(System.out::println);
+
+            case 2 -> addressBook.stream()
+                    .sorted(Comparator.comparing(Person::getState))
+                    .forEach(System.out::println);
+
+            case 3 -> addressBook.stream()
+                    .sorted(Comparator.comparing(Person::getZip))
+                    .forEach(System.out::println);
+
+            default -> System.out.println("Invalid Choice");
+        }
     }
 
     private static Person createPerson(Scanner scanner) {
