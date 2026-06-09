@@ -15,30 +15,20 @@ public class AddressBookMain {
         System.out.println("Person Added Successfully");
         System.out.println(person);
 
-        System.out.print("Do you want to edit this person? yes/no: ");
-        String choice = scanner.nextLine();
+        System.out.print("Enter first name to delete: ");
+        String firstName = scanner.nextLine();
 
-        if (choice.equalsIgnoreCase("yes")) {
+        System.out.print("Enter last name to delete: ");
+        String lastName = scanner.nextLine();
 
-            System.out.println("Enter new details except name");
+        if (person.getFirstName().equalsIgnoreCase(firstName)
+                && person.getLastName().equalsIgnoreCase(lastName)) {
 
-            System.out.print("Enter new address: ");
-            person.setAddress(scanner.nextLine());
+            person = null;
+            System.out.println("Person Deleted Successfully");
 
-            System.out.print("Enter new city: ");
-            person.setCity(scanner.nextLine());
-
-            System.out.print("Enter new state: ");
-            person.setState(scanner.nextLine());
-
-            System.out.print("Enter new zip: ");
-            person.setZip(scanner.nextLine());
-
-            System.out.print("Enter new phone number: ");
-            person.setPhoneNumber(scanner.nextLine());
-
-            System.out.println("Person Updated Successfully");
-            System.out.println(person);
+        } else {
+            System.out.println("Person Not Found");
         }
     }
 
